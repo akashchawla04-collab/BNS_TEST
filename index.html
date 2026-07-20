@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Judiciary Prime — BNS 2023 Test 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #0B1730;
+    display: flex;
+    justify-content: center;
+    padding: 28px 14px;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+  .frame {
+    width: 100%;
+    max-width: 560px;
+    background: #0F1F3D;
+    border-radius: 14px;
+    border: 1px solid rgba(201,162,39,0.22);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(201,162,39,0.18);
+  }
+  .header-left { display: flex; align-items: center; gap: 10px; }
+  .seal {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1.5px solid rgba(201,162,39,0.5);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .brand-name {
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 14.5px;
+    letter-spacing: 0.06em; color: #F3EEE1;
+  }
+  .brand-sub { font-size: 11px; color: #8A8471; margin-top: 2px; }
+  .timer-box {
+    display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+    border-radius: 8px; border: 1px solid rgba(201,162,39,0.35);
+    font-family: 'JetBrains Mono', monospace; color: #F3EEE1;
+  }
+  .timer-box.warn { border-color: #C9A227; }
+  .timer-box.critical { border-color: #A13D3D; color: #A13D3D; }
+  .screen { padding: 22px 20px 26px; }
+  .paper-card { background: #F3EEE1; border-radius: 10px; padding: 24px 22px; color: #1C1C1C; }
+  .eyebrow { font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; color: #8A6D1F; margin-bottom: 10px; }
+  h1.title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 22px; margin: 0 0 10px; color: #0F1F3D; line-height: 1.25; }
+  .subtitle { font-size: 14px; line-height: 1.55; color: #3B3B3B; margin: 0 0 20px; }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .meta-item { border: 1px solid rgba(15,31,61,0.14); border-radius: 8px; padding: 10px 12px; background: rgba(15,31,61,0.03); }
+  .meta-label { font-size: 10.5px; letter-spacing: 0.06em; color: #8A8471; margin-bottom: 3px; text-transform: uppercase; }
+  .meta-value { font-size: 14.5px; font-weight: 600; color: #0F1F3D; }
+  .field-label { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: #8A6D1F; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .name-input {
+    width: 100%; padding: 11px 13px; border-radius: 8px; border: 1.5px solid rgba(15,31,61,0.2);
+    background: #fff; font-size: 14.5px; font-family: 'Source Serif 4', serif; color: #1C1C1C;
+    margin-bottom: 18px;
+  }
+  .name-input:focus { outline: none; border-color: #C9A227; }
+  .btn-primary {
+    width: 100%; background: #0F1F3D; color: #F3EEE1; border: none; border-radius: 8px;
+    padding: 13px 16px; font-size: 14.5px; font-weight: 600; font-family: 'Source Serif 4', serif;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn-primary:disabled { opacity: 0.45; cursor: default; }
+  .btn-whatsapp {
+    width: 100%; background: #25D366; color: #06390F; border: none; border-radius: 8px;
+    padding: 13px 16px; font-size: 14.5px; font-weight: 700; font-family: 'Source Serif 4', serif;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-bottom: 10px; text-decoration: none;
+  }
+  .start-note { margin-top: 12px; font-size: 12px; color: #8A8471; text-align: center; }
+  .error-note { font-size: 12px; color: #A13D3D; margin: -12px 0 16px; display: none; }
+  .progress-row { margin-bottom: 16px; }
+  .progress-track { height: 4px; background: rgba(243,238,225,0.12); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #C9A227; transition: width 0.25s ease; }
+  .progress-label { font-size: 11.5px; color: #8A8471; margin-top: 6px; }
+  .q-card { background: rgba(243,238,225,0.04); border: 1px solid rgba(243,238,225,0.12); border-radius: 10px; padding: 18px 18px 20px; }
+  .q-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .subject-tag {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; color: #C9A227;
+    border: 1px solid rgba(201,162,39,0.35); border-radius: 5px; padding: 3px 8px; text-transform: uppercase;
+  }
+  .flag-btn { display: flex; align-items: center; gap: 5px; background: transparent; border: none; color: #8A8471; font-size: 11.5px; cursor: pointer; font-family: 'Source Serif 4', serif; }
+  .flag-btn.active { color: #C9A227; }
+  .q-text { font-size: 15.5px; line-height: 1.5; color: #F3EEE1; margin-bottom: 18px; font-family: 'Fraunces', serif; font-weight: 500; }
+  .options-col { display: flex; flex-direction: column; gap: 9px; }
+  .option-btn {
+    display: flex; align-items: center; gap: 12px; padding: 11px 13px;
+    background: rgba(243,238,225,0.03); border: 1px solid rgba(243,238,225,0.14);
+    border-radius: 8px; cursor: pointer; text-align: left; width: 100%;
+  }
+  .option-btn.selected { background: rgba(201,162,39,0.1); border-color: #C9A227; }
+  .option-letter {
+    width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(243,238,225,0.25);
+    display: flex; align-items: center; justify-content: center; font-size: 11.5px; font-weight: 600;
+    color: #B9B4A2; flex-shrink: 0;
+  }
+  .option-btn.selected .option-letter { background: #C9A227; border-color: #C9A227; color: #0F1F3D; }
+  .option-text { font-size: 13.5px; color: #EDE8D9; line-height: 1.4; }
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; }
+  .nav-btn {
+    display: flex; align-items: center; gap: 6px; background: transparent;
+    border: 1px solid rgba(243,238,225,0.2); color: #EDE8D9; border-radius: 8px;
+    padding: 10px 16px; font-size: 13.5px; cursor: pointer; font-family: 'Source Serif 4', serif;
+  }
+  .nav-btn:disabled { opacity: 0.4; cursor: default; }
+  .nav-btn-primary {
+    display: flex; align-items: center; gap: 6px; background: rgba(201,162,39,0.14);
+    border: 1px solid #C9A227; color: #F3EEE1; border-radius: 8px; padding: 10px 16px;
+    font-size: 13.5px; cursor: pointer; font-family: 'Source Serif 4', serif; margin-left: auto;
+  }
+  .submit-btn {
+    background: #A13D3D; border: none; color: #F3EEE1; border-radius: 8px;
+    padding: 10px 20px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+    font-family: 'Source Serif 4', serif; margin-left: auto;
+  }
+  .dots-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; max-height: 140px; overflow-y: auto; }
+  .dot {
+    width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(243,238,225,0.28);
+    font-size: 10px; font-weight: 600; cursor: pointer; font-family: 'JetBrains Mono', monospace;
+    background: transparent; color: #B9B4A2; flex-shrink: 0;
+  }
+  .dot.answered { background: #C9A227; color: #0F1F3D; border-color: #C9A227; }
+  .dot.current { border-color: #F3EEE1; }
+  .student-name { font-size: 13px; color: #8A8471; margin-bottom: 4px; }
+  .score-row { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+  .score-circle {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    width: 92px; height: 92px; border-radius: 50%; border: 2px solid #0F1F3D; flex-shrink: 0;
+  }
+  .score-big { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; color: #0F1F3D; line-height: 1; }
+  .score-of { font-size: 12px; color: #8A8471; font-weight: 500; }
+  .verdict { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; color: #0F1F3D; margin-bottom: 8px; }
+  .score-stats-row { display: flex; gap: 16px; }
+  .score-stat-value { font-size: 16px; font-weight: 700; }
+  .score-stat-label { font-size: 10.5px; color: #8A8471; letter-spacing: 0.03em; }
+  .review-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; margin-bottom: 20px; max-height: 260px; overflow-y: auto; }
+  .review-tile {
+    display: flex; align-items: center; justify-content: space-between; padding: 7px 8px;
+    border-radius: 6px; border: 1.5px solid rgba(15,31,61,0.14); background: rgba(15,31,61,0.03);
+    font-size: 11.5px; font-weight: 600; color: #0F1F3D; cursor: pointer; font-family: 'Source Serif 4', serif;
+  }
+  .sent-note { font-size: 11.5px; color: #4C7A5A; text-align: center; margin-bottom: 10px; display: none; }
+  .back-btn {
+    display: flex; align-items: center; gap: 5px; background: transparent; border: none;
+    color: #B9B4A2; font-size: 12.5px; cursor: pointer; margin-bottom: 12px; font-family: 'Source Serif 4', serif;
+  }
+  .review-q-num { font-size: 12px; color: #8A8471; }
+  .review-option { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(243,238,225,0.14); }
+  .explain-box { margin-top: 16px; padding: 12px 14px; border-radius: 8px; background: rgba(201,162,39,0.08); border: 1px solid rgba(201,162,39,0.25); }
+  .explain-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; color: #C9A227; margin-bottom: 5px; text-transform: uppercase; }
+  .explain-text { font-size: 13px; color: #EDE8D9; line-height: 1.5; }
+  .footer { padding: 12px 20px; border-top: 1px solid rgba(201,162,39,0.14); font-size: 10.5px; color: #6B6754; text-align: center; line-height: 1.5; }
+  .hidden { display: none !important; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="header">
+    <div class="header-left">
+      <div class="seal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.75"><path d="M12 3v18M5 7l-3 6a3 3 0 0 0 6 0l-3-6zM19 7l-3 6a3 3 0 0 0 6 0l-3-6zM4 7h16M8 3h8"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">JUDICIARY PRIME</div>
+        <div class="brand-sub">BNS 2023 &middot; Test 01</div>
+      </div>
+    </div>
+    <div class="timer-box hidden" id="timerBox">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <span id="timerText">45:00</span>
+    </div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen" id="startScreen">
+    <div class="paper-card">
+      <div class="eyebrow">ADMIT CARD &middot; JUDICIARY &amp; PCS-J PRELIMS</div>
+      <h1 class="title">Bharatiya Nyaya Sanhita, 2023 — Test 01</h1>
+      <p class="subtitle">30 objective questions on General Exceptions and Offences Affecting the Human Body under the BNS, 2023 — including landmark case laws.</p>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Questions</div><div class="meta-value">30</div></div>
+        <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">30 minutes</div></div>
+        <div class="meta-item"><div class="meta-label">Marking</div><div class="meta-value">+1, no negative</div></div>
+        <div class="meta-item"><div class="meta-label">Statute</div><div class="meta-value">BNS, 2023</div></div>
+      </div>
+      <label class="field-label" for="nameInput">Your Name</label>
+      <input class="name-input" id="nameInput" type="text" placeholder="Enter your full name" />
+      <div class="error-note" id="nameError">Please enter your name to begin.</div>
+      <button class="btn-primary" id="startBtn">Begin Test →</button>
+      <div class="start-note">Timer starts the moment you begin. The test auto-submits at 00:00.</div>
+    </div>
+  </div>
+
+  <!-- TEST SCREEN -->
+  <div class="screen hidden" id="testScreen">
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:2%"></div></div>
+      <div class="progress-label" id="progressLabel">Q1 / 50 &middot; 0 answered</div>
+    </div>
+    <div class="q-card">
+      <div class="q-top-row">
+        <span class="subject-tag" id="subjectTag"></span>
+        <button class="flag-btn" id="flagBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          <span id="flagLabel">Flag for review</span>
+        </button>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <div class="options-col" id="optionsCol"></div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" id="prevBtn">&larr; Previous</button>
+      <button class="nav-btn-primary hidden" id="nextBtn">Next &rarr;</button>
+      <button class="submit-btn hidden" id="submitBtn">Submit Test</button>
+    </div>
+    <div class="dots-row" id="dotsRow"></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="screen hidden" id="resultScreen">
+    <div class="paper-card">
+      <div class="eyebrow">RESULT &middot; BNS 2023 TEST 01</div>
+      <div class="student-name" id="studentNameLabel"></div>
+      <div class="score-row">
+        <div class="score-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.75"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg>
+          <div class="score-big"><span id="scoreVal">0</span><span class="score-of">/50</span></div>
+        </div>
+        <div>
+          <div class="verdict" id="verdictText"></div>
+          <div class="score-stats-row">
+            <div><div class="score-stat-value" style="color:#4C7A5A" id="correctVal">0</div><div class="score-stat-label">Correct</div></div>
+            <div><div class="score-stat-value" style="color:#A13D3D" id="wrongVal">0</div><div class="score-stat-label">Wrong</div></div>
+            <div><div class="score-stat-value" style="color:#8A8471" id="unattVal">0</div><div class="score-stat-label">Unattempted</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="review-grid" id="reviewGrid"></div>
+      <div class="sent-note" id="sentNote">✓ Result opened in WhatsApp — tap send to submit.</div>
+      <a class="btn-whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="#06390F"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2z"/></svg>
+        Send Result to Judiciary Prime
+      </a>
+      <button class="btn-primary" id="retakeBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F3EEE1" stroke-width="2.25"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        Retake Test
+      </button>
+    </div>
+  </div>
+
+  <!-- REVIEW DETAIL SCREEN -->
+  <div class="screen hidden" id="reviewScreen">
+    <button class="back-btn" id="backBtn">&larr; Back to scorecard</button>
+    <div class="q-card">
+      <div class="q-top-row">
+        <span class="subject-tag" id="rSubjectTag"></span>
+        <span class="review-q-num" id="rQNum"></span>
+      </div>
+      <div class="q-text" id="rQText"></div>
+      <div class="options-col" id="rOptionsCol"></div>
+      <div class="explain-box">
+        <div class="explain-label">Why</div>
+        <div class="explain-text" id="rExplainText"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Judiciary Prime &middot; BNS, 2023 (in force 1 July 2024) &middot; verify section numbers against the current bare act before relying on them.</div>
+</div>
+
+<script>
+const RESULT_WHATSAPP_NUMBER = "917466900302";
+
+const QUESTIONS = [
+  {
+    "subject": "BNS §14",
+    "q": "Under Section 14 of the BNS, 2023, which of the following is a valid defence?",
+    "options": [
+      "Mistake of law",
+      "Mistake of fact believing oneself bound by law",
+      "Mistake of fact believing oneself justified by law",
+      "Both B and C"
+    ],
+    "answer": 3,
+    "explain": "Section 14 covers both a mistake of fact where a person believes himself bound by law, and where he believes himself justified by law — both are valid defences; mistake of law is not."
+  },
+  {
+    "subject": "BNS General Exceptions",
+    "q": "The burden of proving the existence of circumstances bringing a case within any General Exception under BNS lies on:",
+    "options": [
+      "The prosecution",
+      "The accused",
+      "The court",
+      "The victim"
+    ],
+    "answer": 1,
+    "explain": "The burden of proving that a case falls within a General Exception rests on the accused, not the prosecution."
+  },
+  {
+    "subject": "BSA §105",
+    "q": "Which Section of the Bharatiya Sakshya Adhiniyam, 2023, deals with the burden of proving that the accused's case falls within a General Exception?",
+    "options": [
+      "Section 101",
+      "Section 105",
+      "Section 108",
+      "Section 114"
+    ],
+    "answer": 2,
+    "explain": "Section 108 of the BSA, 2023 places the burden of proving circumstances bringing the case within a General Exception on the accused."
+  },
+  {
+    "subject": "BNS §20",
+    "q": "A child below _____ years of age is incapable of committing an offence under BNS.",
+    "options": [
+      "7",
+      "10",
+      "12",
+      "14"
+    ],
+    "answer": 0,
+    "explain": "Section 20 of the BNS provides that nothing done by a child below seven years of age is an offence (doli incapax)."
+  },
+  {
+    "subject": "BNS §18",
+    "q": "Under Section 18 of BNS, an accident is a valid defence if:",
+    "options": [
+      "It occurs while doing a lawful act with lawful means and without criminal intention",
+      "It occurs while doing an unlawful act",
+      "It occurs due to the accused's negligence",
+      "It occurs during the commission of a crime"
+    ],
+    "answer": 0,
+    "explain": "Section 18 protects an accident occurring while doing a lawful act, in a lawful manner, by lawful means, with proper care and caution, and without criminal intention or knowledge."
+  },
+  {
+    "subject": "BNS §34-44",
+    "q": "The right of private defence of the body and property is provided under which Sections of BNS?",
+    "options": [
+      "Sections 14 to 24",
+      "Sections 25 to 33",
+      "Sections 34 to 44",
+      "Sections 45 to 55"
+    ],
+    "answer": 2,
+    "explain": "Private defence of body and property is dealt with under Sections 34 to 44 of the BNS, 2023."
+  },
+  {
+    "subject": "BNS §35",
+    "q": "Which Section of BNS states that \"Nothing is an offence which is done in the exercise of the right of private defence\"?",
+    "options": [
+      "Section 33",
+      "Section 34",
+      "Section 35",
+      "Section 36"
+    ],
+    "answer": 2,
+    "explain": "Section 35 lays down that nothing done in the exercise of the right of private defence is an offence."
+  },
+  {
+    "subject": "BNS §37",
+    "q": "Under Section 37 of BNS, there is NO right of private defence against:",
+    "options": [
+      "An act which does not reasonably cause apprehension of death or grievous hurt",
+      "An act done by a public servant acting in good faith under colour of his office",
+      "An act done by a person of unsound mind",
+      "Both A and B"
+    ],
+    "answer": 3,
+    "explain": "Section 37 excludes the right of private defence against acts by public servants acting in good faith under colour of office, and against acts not reasonably causing apprehension of death or grievous hurt — both A and B apply."
+  },
+  {
+    "subject": "BNS §38",
+    "q": "The right of private defence of the body extends to causing death under Section 38 when there is reasonable apprehension of:",
+    "options": [
+      "Grievous hurt",
+      "Rape",
+      "Kidnapping or abduction",
+      "All of the above"
+    ],
+    "answer": 3,
+    "explain": "Section 38 lists several circumstances — including grievous hurt, rape, and kidnapping/abduction — where the right of private defence of the body extends to causing death."
+  },
+  {
+    "subject": "BNS §41",
+    "q": "The right of private defence of property extends to causing death under Section 41 in case of:",
+    "options": [
+      "Theft",
+      "Mischief",
+      "Robbery or house-breaking after sunset and before sunrise",
+      "Criminal trespass"
+    ],
+    "answer": 2,
+    "explain": "Section 41 extends the right of private defence of property to causing death in cases such as robbery, or house-breaking committed after sunset and before sunrise, among other listed circumstances."
+  },
+  {
+    "subject": "BNS §34",
+    "q": "The right of private defence of the body commences when there is a reasonable apprehension of danger and continues:",
+    "options": [
+      "Until the offence is actually committed",
+      "As long as the apprehension of danger to the body continues",
+      "For a maximum of 24 hours",
+      "Until the police arrive"
+    ],
+    "answer": 1,
+    "explain": "The right of private defence of the body commences as soon as a reasonable apprehension of danger arises, and continues as long as that apprehension continues."
+  },
+  {
+    "subject": "BNS §44",
+    "q": "Under Section 44 of BNS, if a person exercising the right of private defence against a deadly assault causes harm to an innocent person:",
+    "options": [
+      "He is guilty of that harm",
+      "He is not guilty of any offence",
+      "He is guilty of negligence",
+      "He is liable for compensation only"
+    ],
+    "answer": 1,
+    "explain": "Section 44 protects a person who, in the exercise of the right of private defence against an assault reasonably causing apprehension of death, causes harm to an innocent bystander by misfortune or accident — he is not guilty of any offence in respect of that harm."
+  },
+  {
+    "subject": "BNS §100",
+    "q": "Culpable homicide is defined under which Section of BNS?",
+    "options": [
+      "Section 99",
+      "Section 100",
+      "Section 101",
+      "Section 102"
+    ],
+    "answer": 1,
+    "explain": "Section 100 of the BNS, 2023 defines culpable homicide."
+  },
+  {
+    "subject": "BNS §101",
+    "q": "Which of the following is the definition of \"murder\" under BNS?",
+    "options": [
+      "Section 100",
+      "Section 101",
+      "Section 102",
+      "Section 103"
+    ],
+    "answer": 1,
+    "explain": "Section 101 of the BNS, 2023 defines murder — culpable homicide amounting to murder under the specified conditions."
+  },
+  {
+    "subject": "BNS §102",
+    "q": "Culpable homicide by causing death of a person other than the person whose death was intended is dealt with under:",
+    "options": [
+      "Section 100",
+      "Section 101",
+      "Section 102",
+      "Section 103"
+    ],
+    "answer": 2,
+    "explain": "Section 102 covers culpable homicide committed by causing the death of a person other than the one whose death was intended or knowledge of causing whose death existed."
+  },
+  {
+    "subject": "BNS §105",
+    "q": "The minimum punishment for culpable homicide not amounting to murder under Section 105 is:",
+    "options": [
+      "3 years",
+      "5 years",
+      "7 years",
+      "10 years"
+    ],
+    "answer": 1,
+    "explain": "Section 105 prescribes imprisonment which may extend to life, or a minimum of five years, along with fine, for culpable homicide not amounting to murder where the act is done with the intention of causing death."
+  },
+  {
+    "subject": "BNS §106",
+    "q": "Causing death by negligence is punishable under which Section of BNS?",
+    "options": [
+      "Section 105",
+      "Section 106",
+      "Section 107",
+      "Section 108"
+    ],
+    "answer": 1,
+    "explain": "Section 106 of the BNS, 2023 punishes causing death by a rash or negligent act."
+  },
+  {
+    "subject": "BNS §107",
+    "q": "Abetment of suicide of a child or person of unsound mind is dealt with under:",
+    "options": [
+      "Section 106",
+      "Section 107",
+      "Section 108",
+      "Section 109"
+    ],
+    "answer": 1,
+    "explain": "Section 107 deals with abetment of suicide, including enhanced treatment where the person abetted is a child or of unsound mind."
+  },
+  {
+    "subject": "BNS §109",
+    "q": "Attempt to murder is punishable under Section _____ of BNS.",
+    "options": [
+      "108",
+      "109",
+      "110",
+      "111"
+    ],
+    "answer": 1,
+    "explain": "Section 109 of the BNS, 2023 punishes attempt to murder."
+  },
+  {
+    "subject": "BNS §111",
+    "q": "\"Organised crime\" is defined and made punishable under which Section of BNS?",
+    "options": [
+      "Section 109",
+      "Section 110",
+      "Section 111",
+      "Section 112"
+    ],
+    "answer": 2,
+    "explain": "Section 111 of the BNS, 2023 defines and punishes organised crime — a new provision introduced in the BNS."
+  },
+  {
+    "subject": "BNS §112",
+    "q": "\"Petty organised crime\" is defined under which Section?",
+    "options": [
+      "Section 110",
+      "Section 111",
+      "Section 112",
+      "Section 113"
+    ],
+    "answer": 2,
+    "explain": "Section 112 defines and punishes petty organised crime, distinct from organised crime under Section 111."
+  },
+  {
+    "subject": "BNS Case Law",
+    "q": "In the landmark case of Shankar Narayan Bhadolkar v. State of Maharashtra, the Supreme Court held that:",
+    "options": [
+      "General exceptions are procedural, not substantive",
+      "General exceptions are part of every offence, but the burden to prove them lies on the accused",
+      "The right of private defence is absolute",
+      "Intoxication is always a valid defence"
+    ],
+    "answer": 1,
+    "explain": "The Supreme Court held that general exceptions form part of the definition of every offence, and the burden of proving that the case falls within an exception lies on the accused."
+  },
+  {
+    "subject": "BNS Case Law",
+    "q": "In K.M. Nanavati v. State of Maharashtra, the Supreme Court laid down the principle regarding:",
+    "options": [
+      "Right of private defence",
+      "Grave and sudden provocation as an exception to murder",
+      "Burden of proof in dowry death",
+      "Causing death by negligence"
+    ],
+    "answer": 1,
+    "explain": "Nanavati's case is a landmark authority on the defence of grave and sudden provocation reducing murder to culpable homicide not amounting to murder."
+  },
+  {
+    "subject": "BNS §36",
+    "q": "Under Section 36 of BNS, the right of private defence applies even against an act of a person:",
+    "options": [
+      "Who is of unsound mind",
+      "Who is intoxicated",
+      "Who is under a misconception",
+      "All of the above"
+    ],
+    "answer": 3,
+    "explain": "Section 36 clarifies that the right of private defence extends to acts of persons who, by reason of unsoundness of mind, intoxication, or misconception, are incapable of forming the requisite intention or knowledge, as if the act were an offence."
+  },
+  {
+    "subject": "BNS General Exceptions",
+    "q": "Which of the following is NOT a \"General Exception\" under BNS?",
+    "options": [
+      "Mistake of fact",
+      "Accident",
+      "Necessity",
+      "Res judicata"
+    ],
+    "answer": 3,
+    "explain": "Res judicata is a procedural/civil law doctrine, not a General Exception under Chapter III of the BNS; mistake of fact, accident, and necessity are all recognised General Exceptions."
+  },
+  {
+    "subject": "BNS §22",
+    "q": "The defence of \"unsoundness of mind\" is provided under which Section of BNS?",
+    "options": [
+      "Section 20",
+      "Section 21",
+      "Section 22",
+      "Section 23"
+    ],
+    "answer": 2,
+    "explain": "Section 22 of the BNS, 2023 provides the defence of an act done by a person of unsound mind."
+  },
+  {
+    "subject": "BNS §23",
+    "q": "Voluntary intoxication is a defence under BNS if:",
+    "options": [
+      "The person was completely intoxicated",
+      "The intoxication was against the person's will",
+      "The intoxication negates the required mens rea for the offence",
+      "Both B and C"
+    ],
+    "answer": 3,
+    "explain": "Section 23 makes intoxication a defence where it was administered without the person's knowledge or against their will, or where it negates the mental element (mens rea) required for the offence."
+  },
+  {
+    "subject": "BNS §102",
+    "q": "Under Section 102 of BNS, if A intends to kill B but accidentally kills C, A is guilty of:",
+    "options": [
+      "Murder of B",
+      "Murder of C",
+      "Culpable homicide of C",
+      "No offence"
+    ],
+    "answer": 0,
+    "explain": "Under the doctrine of transferred intention/malice codified in Section 102, A's intention to kill B transfers to the actual victim C, and A is guilty of murder (treated as murder of the intended victim's category) despite the mistake in the person killed."
+  },
+  {
+    "subject": "BNS §30",
+    "q": "The defence of \"act done in good faith for benefit of a person without consent\" is provided under:",
+    "options": [
+      "Section 29",
+      "Section 30",
+      "Section 31",
+      "Section 32"
+    ],
+    "answer": 1,
+    "explain": "Section 30 of the BNS, 2023 provides the defence for acts done in good faith for the benefit of a person, even without that person's consent, in specified circumstances."
+  },
+  {
+    "subject": "BNS Private Defence",
+    "q": "Which of the following statements about the right of private defence under BNS is INCORRECT?",
+    "options": [
+      "It is an absolute right with no restrictions",
+      "It is subject to restrictions under Section 37",
+      "It extends to causing death in certain circumstances",
+      "It applies to both body and property"
+    ],
+    "answer": 0,
+    "explain": "The right of private defence is NOT absolute — Section 37 places clear restrictions on it, making option A the incorrect statement."
+  }
+];
+const DURATION = 30 * 60;
+
+let current = 0;
+let selections = {};
+let flagged = {};
+let secondsLeft = DURATION;
+let timerHandle = null;
+let studentName = "";
+
+const $ = id => document.getElementById(id);
+
+function fmt(s) {
+  const m = Math.floor(s/60).toString().padStart(2,'0');
+  const sec = Math.floor(s%60).toString().padStart(2,'0');
+  return m + ':' + sec;
+}
+
+function showScreen(id) {
+  ['startScreen','testScreen','resultScreen','reviewScreen'].forEach(s => $(s).classList.toggle('hidden', s !== id));
+}
+
+function startTest() {
+  const nameVal = $('nameInput').value.trim();
+  if (!nameVal) { $('nameError').style.display = 'block'; return; }
+  $('nameError').style.display = 'none';
+  studentName = nameVal;
+
+  current = 0; selections = {}; flagged = {}; secondsLeft = DURATION;
+  $('timerBox').classList.remove('hidden');
+  showScreen('testScreen');
+  renderQuestion();
+  clearInterval(timerHandle);
+  timerHandle = setInterval(() => {
+    secondsLeft--;
+    if (secondsLeft <= 0) { secondsLeft = 0; updateTimer(); clearInterval(timerHandle); submitTest(); return; }
+    updateTimer();
+  }, 1000);
+  updateTimer();
+}
+
+function updateTimer() {
+  $('timerText').textContent = fmt(secondsLeft);
+  const box = $('timerBox');
+  box.classList.remove('warn','critical');
+  if (secondsLeft <= 60) box.classList.add('critical');
+  else if (secondsLeft <= 300) box.classList.add('warn');
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  $('subjectTag').textContent = q.subject;
+  $('qText').textContent = q.q;
+  $('progressFill').style.width = ((current+1)/QUESTIONS.length*100) + '%';
+  $('progressLabel').textContent = 'Q' + (current+1) + ' / ' + QUESTIONS.length + ' \u00b7 ' + Object.keys(selections).length + ' answered';
+
+  const optionsCol = $('optionsCol');
+  optionsCol.innerHTML = '';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (selections[current] === idx ? ' selected' : '');
+    btn.innerHTML = '<span class="option-letter">' + String.fromCharCode(65+idx) + '</span><span class="option-text"></span>';
+    btn.querySelector('.option-text').textContent = opt;
+    btn.onclick = () => { selections[current] = idx; renderQuestion(); renderDots(); };
+    optionsCol.appendChild(btn);
+  });
+
+  $('flagBtn').classList.toggle('active', !!flagged[current]);
+  $('flagLabel').textContent = flagged[current] ? 'Flagged' : 'Flag for review';
+
+  $('prevBtn').disabled = current === 0;
+  const isLast = current === QUESTIONS.length - 1;
+  $('nextBtn').classList.toggle('hidden', isLast);
+  $('submitBtn').classList.toggle('hidden', !isLast);
+
+  renderDots();
+}
+
+function renderDots() {
+  const dotsRow = $('dotsRow');
+  dotsRow.innerHTML = '';
+  QUESTIONS.forEach((_, idx) => {
+    const answered = selections[idx] !== undefined;
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (answered ? ' answered' : '') + (idx === current ? ' current' : '');
+    dot.textContent = idx + 1;
+    dot.onclick = () => { current = idx; renderQuestion(); };
+    dotsRow.appendChild(dot);
+  });
+}
+
+function submitTest() {
+  clearInterval(timerHandle);
+  let score = 0, attempted = 0;
+  QUESTIONS.forEach((q, idx) => {
+    if (selections[idx] !== undefined) { attempted++; if (selections[idx] === q.answer) score++; }
+  });
+  const wrong = attempted - score;
+  const pct = Math.round(score / QUESTIONS.length * 100);
+  const verdict = pct >= 80 ? 'Strong showing' : pct >= 50 ? 'Solid attempt' : 'Needs revision';
+
+  $('studentNameLabel').textContent = studentName;
+  $('scoreVal').textContent = score;
+  $('verdictText').textContent = verdict;
+  $('correctVal').textContent = score;
+  $('wrongVal').textContent = wrong;
+  $('unattVal').textContent = QUESTIONS.length - attempted;
+  $('sentNote').style.display = 'none';
+
+  const grid = $('reviewGrid');
+  grid.innerHTML = '';
+  QUESTIONS.forEach((q, idx) => {
+    const attemptedQ = selections[idx] !== undefined;
+    const correct = selections[idx] === q.answer;
+    const tile = document.createElement('button');
+    tile.className = 'review-tile';
+    tile.style.borderColor = !attemptedQ ? 'rgba(15,31,61,0.14)' : (correct ? '#4C7A5A' : '#A13D3D');
+    tile.innerHTML = '<span>Q' + (idx+1) + '</span>';
+    const icon = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    icon.setAttribute('width','12'); icon.setAttribute('height','12'); icon.setAttribute('viewBox','0 0 24 24');
+    icon.setAttribute('fill','none'); icon.setAttribute('stroke', !attemptedQ ? '#8A8471' : (correct ? '#4C7A5A' : '#A13D3D'));
+    icon.setAttribute('stroke-width','2.5');
+    icon.innerHTML = !attemptedQ ? '<circle cx="12" cy="12" r="9"/>' : (correct ? '<path d="M20 6 9 17l-5-5"/>' : '<path d="M18 6 6 18M6 6l12 12"/>');
+    tile.appendChild(icon);
+    tile.onclick = () => showReview(idx);
+    grid.appendChild(tile);
+  });
+
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  const msg = "Judiciary Prime \u2014 BNS 2023 Test 01 Result\n" +
+    "Name: " + studentName + "\n" +
+    "Score: " + score + "/" + QUESTIONS.length + " (Correct: " + score + ", Wrong: " + wrong + ", Unattempted: " + (QUESTIONS.length - attempted) + ")\n" +
+    "Date: " + dateStr;
+  $('whatsappBtn').href = "https://wa.me/" + RESULT_WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+  $('whatsappBtn').onclick = () => { $('sentNote').style.display = 'block'; };
+
+  $('timerBox').classList.add('hidden');
+  showScreen('resultScreen');
+}
+
+function showReview(idx) {
+  const q = QUESTIONS[idx];
+  const chosen = selections[idx];
+  $('rSubjectTag').textContent = q.subject;
+  $('rQNum').textContent = 'Question ' + (idx+1);
+  $('rQText').textContent = q.q;
+  $('rExplainText').textContent = q.explain;
+
+  const col = $('rOptionsCol');
+  col.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const isAnswer = i === q.answer;
+    const isChosen = i === chosen;
+    const row = document.createElement('div');
+    row.className = 'review-option';
+    row.style.borderColor = isAnswer ? '#4C7A5A' : (isChosen ? '#A13D3D' : 'rgba(243,238,225,0.14)');
+    row.style.background = isAnswer ? 'rgba(76,122,90,0.1)' : (isChosen ? 'rgba(161,61,61,0.1)' : 'transparent');
+    const iconColor = isAnswer ? '#4C7A5A' : (isChosen ? '#A13D3D' : 'rgba(243,238,225,0.25)');
+    const iconPath = isAnswer ? '<path d="M20 6 9 17l-5-5"/>' : (isChosen ? '<path d="M18 6 6 18M6 6l12 12"/>' : '<circle cx="12" cy="12" r="9"/>');
+    row.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="'+iconColor+'" stroke-width="2.5">'+iconPath+'</svg><span class="option-text"></span>';
+    row.querySelector('.option-text').textContent = opt;
+    col.appendChild(row);
+  });
+
+  showScreen('reviewScreen');
+}
+
+$('startBtn').onclick = startTest;
+$('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') startTest(); });
+$('prevBtn').onclick = () => { if (current > 0) { current--; renderQuestion(); } };
+$('nextBtn').onclick = () => { if (current < QUESTIONS.length - 1) { current++; renderQuestion(); } };
+$('submitBtn').onclick = submitTest;
+$('flagBtn').onclick = () => { flagged[current] = !flagged[current]; renderQuestion(); };
+$('retakeBtn').onclick = () => { $('nameInput').value = studentName; showScreen('startScreen'); };
+$('backBtn').onclick = () => showScreen('resultScreen');
+</script>
+</body>
+</html>
