@@ -1,0 +1,77 @@
+[
+ {
+  "day": 1,
+  "secs": "1 - 13",
+  "topic": "Preliminary & Punishments"
+ },
+ {
+  "day": 2,
+  "secs": "14 - 24",
+  "topic": "General Exceptions (Part 1)"
+ },
+ {
+  "day": 3,
+  "secs": "25 - 44",
+  "topic": "General Exceptions (Part 2) & Private Defence"
+ },
+ {
+  "day": 4,
+  "secs": "45 - 62",
+  "topic": "Abetment, Criminal Conspiracy & Attempt"
+ },
+ {
+  "day": 5,
+  "secs": "63 - 79",
+  "topic": "Sexual Offences; Assault against Woman"
+ },
+ {
+  "day": 6,
+  "secs": "80 - 99",
+  "topic": "Marriage, Miscarriage & Offences against Child"
+ },
+ {
+  "day": 7,
+  "secs": "100 - 113",
+  "topic": "Offences affecting Life (Murder)"
+ },
+ {
+  "day": 8,
+  "secs": "114 - 136",
+  "topic": "Hurt, Restraint, Criminal Force & Assault"
+ },
+ {
+  "day": 9,
+  "secs": "137 - 146",
+  "topic": "Kidnapping, Abduction, Trafficking"
+ },
+ {
+  "day": 10,
+  "secs": "303 - 317",
+  "topic": "Property Offences (Part 1)"
+ },
+ {
+  "day": 11,
+  "secs": "318 - 334",
+  "topic": "Property Offences (Part 2)"
+ },
+ {
+  "day": 12,
+  "secs": "335 - 358",
+  "topic": "Documents, Intimidation, Defamation, Repeal"
+ },
+ {
+  "day": 13,
+  "secs": "147 - 188",
+  "topic": "State, Armed Forces, Elections, Currency"
+ },
+ {
+  "day": 14,
+  "secs": "189 - 226",
+  "topic": "Public Tranquillity, Public Servants, Contempt of Authority"
+ },
+ {
+  "day": 15,
+  "secs": "227 - 302",
+  "topic": "False Evidence, Public Health & Safety, Religion"
+ }
+]

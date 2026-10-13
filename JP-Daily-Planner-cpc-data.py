@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+CPC = [
+ (1,  [("Ss. 1 - 9",      "Preliminary — short title, extent and commencement; definitions of decree, order, judgment, decree-holder, judgment-debtor, legal representative and mesne profits; subordination of courts; courts to try all suits of a civil nature unless barred")], None),
+ (2,  [("Ss. 10 - 12",    "Stay of suit (res sub judice); res judicata, including Explanations I to VIII and constructive res judicata; bar to further suit")], None),
+ (3,  [("Ss. 13 - 32",    "Foreign judgments — when not conclusive, presumption; place of suing and transfer of suits; institution of suits; summons, discovery and the summoning of witnesses")], None),
+ (4,  [("Ss. 33 - 48",    "Judgment, decree and interest; costs, compensatory costs for false or vexatious claims and costs for delay; execution — courts by which decrees may be executed and transfer of decrees; questions to be determined by the executing court")], None),
+ (5,  [("Ss. 49 - 74",    "Execution (continued) — powers of the court to enforce execution, arrest and detention, attachment and property exempt from it, sale, rateable distribution and resistance to execution")], None),
+ (6,  [("Ss. 75 - 115",   "Incidental and supplemental proceedings; suits in particular cases, including suits by and against the Government and interpleader; special proceedings and alternative dispute resolution; appeals — first appeal, second appeal, appeals from orders and appeals to the Supreme Court; reference, review and revision")], None),
+ (7,  [("Orders 41 - 47", "Appeals from original decrees, from appellate decrees and from orders; appeals by indigent persons; appeals to the Supreme Court; reference and review")], None),
+ (8,  [("Ss. 116 - 158",  "High Courts and the rule-making power; miscellaneous provisions, including exemption from appearance and arrest, restitution, enlargement of time and caveat"),
+       ("Orders 1 - 3",   "Parties to suits, including joinder, representative suits and substitution; frame of suit and the whole claim; recognised agents and pleaders")], None),
+ (9,  [("Orders 3 - 6",   "Recognised agents and pleaders (revision); institution of suits; issue and service of summons; pleadings generally and amendment of pleadings")], None),
+ (10, [("Orders 7 - 10",  "Plaint, including return and rejection; written statement, set-off and counter-claim; appearance of parties and the consequences of non-appearance; examination of parties by the court and reference to alternative dispute resolution")], None),
+ (11, [("Orders 11 - 15", "Discovery and inspection; admissions; production, impounding and return of documents and summary judgment in commercial suits; settlement of issues; disposal of the suit at the first hearing and case management hearing")], None),
+ (12, [("Orders 16 - 19", "Summoning and attendance of witnesses, including witnesses confined in prison; adjournments; hearing of the suit and examination of witnesses; affidavits")], None),
+ (13, [("Orders 20 - 21", "Judgment and decree; costs; execution of decrees and orders — Order 21, the longest Order, running to 106 rules")], None),
+ (14, [("Orders 22 - 26", "Death, marriage and insolvency of parties; withdrawal and adjustment of suits; payment into court; security for costs; commissions")], None),
+ (15, [("Orders 27 - 32", "Suits by or against the Government and public officers; suits involving a substantial question of constitutional law; suits by or against the armed forces, corporations, firms, trustees, minors and persons of unsound mind; suits relating to the family")], None),
+ (16, [("Orders 33 - 37", "Suits by indigent persons; suits relating to mortgages of immovable property; interpleader; special case; summary procedure")], None),
+ (17, [("Orders 38 - 51", "Arrest and attachment before judgment; temporary injunctions and interlocutory orders; appointment of receivers; Orders 41 to 47 in quick revision; miscellaneous, Chartered High Courts and Provincial Small Cause Courts")], None),
+ (18, [("Ss. 1 - 158; Orders 1 - 51", "Full revision before the test")], "TEST — FULL CPC"),
+]
